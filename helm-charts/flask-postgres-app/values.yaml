@@ -17,7 +17,7 @@ app:
   
   image: mgokayozturk/flask-postgres-app:1.0.3
 
-  livelessProbe:
+  livenessProbe:
     path: /health
     port: 5000
     initialDelaySeconds: 30
