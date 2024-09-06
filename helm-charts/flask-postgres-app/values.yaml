@@ -38,14 +38,14 @@ app:
     successThreshold: 1
     timeoutSeconds: 5
     failureThreshold: 9
-    resources:
-      limits:
-        cpu: 500m
-        memory: 1Gi
-      requests:
-        cpu: 100m
-        memory: 128Mi
-  
+  resources:
+    limits:
+      cpu: 500m
+      memory: 1Gi
+    requests:
+      cpu: 100m
+      memory: 128Mi
+
   service:
     type: NodePort
     port: 5000
