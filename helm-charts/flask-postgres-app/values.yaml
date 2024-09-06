@@ -1,1 +1,64 @@
-## default values
+app:
+  namespace: app
+  name: flask
+  port: 5000
+
+  db:
+    name: postgres
+    user: postgres
+    port: "5432"
+    host: db-service.db.svc.cluster.local
+    password: postgres
+  
+  replicaCount: 1
+  
+  strategy:
+    type: RollingUpdate
+  
+  image: mgokayozturk/flask-postgres-app:1.0.3
+
+  livelessProbe:
+    path: /health
+    port: 5000
+    initialDelaySeconds: 30
+    periodSeconds: 10
+    timeoutSeconds: 5
+    failureThreshold: 2
+  readinessProbe:
+    path: /health
+    port: 5000
+    initialDelaySeconds: 30
+    periodSeconds: 10
+    timeoutSeconds: 5
+    failureThreshold: 2
+  startupProbe:
+    path: /health
+    port: 5000
+    periodSeconds: 10
+    successThreshold: 1
+    timeoutSeconds: 5
+    failureThreshold: 9
+    resources:
+      limits:
+        cpu: 500m
+        memory: 1Gi
+      requests:
+        cpu: 100m
+        memory: 128Mi
+  
+  service:
+    type: NodePort
+    port: 5000
+    targetPort: 5000
+    nodePort: 30031
+    
+    
+  
+db:
+  namespace: db
+  name: postgres
+
+
+global:
+  networkPolicy:
+    create: false

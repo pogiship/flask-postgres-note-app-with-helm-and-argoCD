@@ -1,0 +1,81 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ .Values.app.name}}-deployment
+  namespace: {{ .Values.app.namespace }}
+  labels:
+    app: {{ .Values.app.name }}
+
+spec:
+
+  selector:
+    matchLabels:
+      app: {{ .Values.app.name }}
+  
+  replicas: {{ .Values.app.replicaCount }}
+
+  strategy:
+    type: {{ .Values.app.strategy.type }}
+    
+  template:
+    metadata:
+      labels:
+        app: {{ .Values.app.name }}
+
+    spec:
+      containers:
+        - name: {{ .Values.app.name }}-container
+          image: {{ .Values.app.image }}
+          
+
+          livenessProbe:
+            httpGet:
+              path: {{ .Values.app.livenessProbe.path }}
+              port: {{ .Values.app.livenessProbe.port }}
+              scheme: HTTP
+            initialDelaySeconds: {{ .Values.app.livenessProbe.initialDelaySeconds }}
+            periodSeconds: {{ .Values.app.livenessProbe.periodSeconds }}
+            timeoutSeconds: {{ .Values.app.livenessProbe.timeoutSeconds }}
+            failureThreshold: {{ .Values.app.livenessProbe.failureThreshold }}
+          
+          readinessProbe:
+            httpGet:
+              path: {{ .Values.app.readinessProbe.path }}
+              port: {{ .Values.app.readinessProbe.port }}
+              scheme: HTTP
+            initialDelaySeconds: {{ .Values.app.readinessProbe.initialDelaySeconds }}
+            periodSeconds: {{ .Values.app.readinessProbe.periodSeconds }}
+            timeoutSeconds: {{ .Values.app.readinessProbe.timeoutSeconds }}
+            failureThreshold: {{ .Values.app.readinessProbe.failureThreshold }}
+          
+          startupProbe:
+            httpGet:
+              path: {{ .Values.app.startupProbe.path }}
+              port: {{ .Values.app.startupProbe.port }}
+              scheme: HTTP
+            periodSeconds: {{ .Values.app.startupProbe.periodSeconds }}
+            successThreshold: {{ .Values.app.startupProbe.successThreshold }}
+            timeoutSeconds: {{ .Values.app.startupProbe.timeoutSeconds }}
+            failureThreshold: {{ .Values.app.startupProbe.failureThreshold }}
+
+
+          # Constraints
+          resources:
+            requests:
+              memory: "{{ .Values.app.resources.requests.memory }}"
+              cpu: "{{ .Values.app.resources.requests.cpu }}"
+            limits:
+              memory: "{{ .Values.app.resources.limits.memory }}"
+              cpu: "{{ .Values.app.resources.limits.cpu }}"
+          
+          # ENVIRONMENT VARIABLES
+          envFrom:
+          - configMapRef:
+              name: {{ .Values.app.name }}-configmap
+          - secretRef: 
+              name: {{ .Values.app.name }}-secret
+          ports:
+            - containerPort: {{ .Values.app.port }}
+
+
+
