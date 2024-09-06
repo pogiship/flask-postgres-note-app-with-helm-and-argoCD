@@ -7,7 +7,7 @@ metadata:
   labels:
     app: {{ .Values.app.name }}
 data:
-  DB_NAME: {{ .Values.app.db.name }}
-  POSTGRES_USER: {{ .Values.app.db.user }}
-  DB_PORT: {{ .Values.app.db.port }}
-  DB_HOST: {{ .Values.app.db.host }}
+  DB_NAME: {{ .Values.app.env.name }}
+  POSTGRES_USER: {{ .Values.app.env.user }}
+  DB_PORT: {{ .Values.app.env.port }}
+  DB_HOST: {{ .Values.app.env.host }}

@@ -3,7 +3,7 @@ app:
   name: flask
   port: 5000
 
-  db:
+  env:
     name: postgres
     user: postgres
     port: "5432"
@@ -52,11 +52,53 @@ app:
     targetPort: 5000
     nodePort: 30031
     
-    
-  
 db:
   namespace: db
   name: postgres
+  port: 5432
+  env: 
+    POSTGRES_DB: postgres
+    POSTGRES_USER: postgres
+    POSTGRES_PASSWORD: postgres
+  service:
+    type: ClusterIP
+    port: 5432
+    targetPort: 5432
+  pvc:
+    accessModes: ReadWriteOnce
+    resources:
+      requests: 
+        storage: 1Gi
+  replicaCount: 1
+  image: 
+    repository: postgres
+    tag: 9.6
+  resources:
+    requests:
+      memory: "64Mi"
+      cpu: "250m"
+    limits:
+      memory: "1Gi"
+      cpu: "500m"
+  readinessProbe:
+    initialDelaySeconds: 15
+    periodSeconds: 10
+  livenessProbe:
+    initialDelaySeconds: 15
+    periodSeconds: 10
+
+
+
+pv:
+  name: db-pv
+  capacity:
+    storage: 1Gi
+  accessModes: ReadWriteOnce
+  persistentVolumeReclaimPolicy: Retain
+  storageClassName: manual
+  hostPath:
+    path: /tmp/data
+
 
 
 global:

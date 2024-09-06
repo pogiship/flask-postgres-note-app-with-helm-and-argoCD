@@ -1,11 +1,11 @@
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
-  name: db-pvc
-  namespace: db
+  name: {{ .Values.db.name }}-pvc
+  namespace: {{ .Values.db.namespace }}
 spec:
   accessModes:
-    - ReadWriteOnce
+    - {{ .Values.db.pvc.accessModes }}
   resources:
     requests:
-      storage: 1Gi
+      storage: {{ .Values.db.pvc.resources.requests.storage }}
