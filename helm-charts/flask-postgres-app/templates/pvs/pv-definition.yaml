@@ -4,7 +4,7 @@ metadata:
   name: {{ .Values.pv.name }}
 spec:
   capacity:
-    storage: {{ .Values.pv.capacity.storage }}
+    storage: "{{ .Values.pv.capacity.storage }}"
   accessModes:
     - {{ .Values.pv.accessModes }}
   persistentVolumeReclaimPolicy: {{ .Values.pv.persistentVolumeReclaimPolicy }}

@@ -8,4 +8,4 @@ spec:
     - {{ .Values.db.pvc.accessModes }}
   resources:
     requests:
-      storage: {{ .Values.db.pvc.resources.requests.storage }}
+      storage: "{{ .Values.db.pvc.resources.requests.storage }}"

@@ -75,11 +75,11 @@ db:
     tag: 9.6
   resources:
     requests:
-      memory: "64Mi"
-      cpu: "250m"
+      memory: 64Mi
+      cpu: 250m
     limits:
-      memory: "1Gi"
-      cpu: "500m"
+      memory: 1Gi
+      cpu: 500m
   readinessProbe:
     initialDelaySeconds: 15
     periodSeconds: 10
