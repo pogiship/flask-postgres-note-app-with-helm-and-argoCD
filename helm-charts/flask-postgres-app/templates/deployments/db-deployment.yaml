@@ -1,0 +1,66 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  namespace: db
+  name: db-deployment
+  labels:
+    db: postgres
+
+spec:
+
+  selector:
+    matchLabels:
+      db: postgres
+
+  replicas: 1
+
+  template:
+    metadata:
+      labels:
+        db: postgres
+        
+    spec:
+      containers:
+        - name: db-container
+          image: postgres:9.6
+          # Constraints
+          resources:
+            requests:
+              memory: "64Mi"
+              cpu: "250m"
+            limits:
+              memory: "1Gi"
+              cpu: "500m"
+          
+          # ENVIRONMENT VARIABLES
+          envFrom:
+          - configMapRef:
+              name: postgres-configmap
+          env:
+            - name: POSTGRES_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: db-secret
+                  key: POSTGRES_PASSWORD
+
+          volumeMounts:
+            - name: db-storage
+              mountPath: /var/lib/postgresql/data
+          ports:
+            - containerPort: 5432
+          # Liveness and Readiness Probes
+          readinessProbe:
+            tcpSocket:
+              port: 5432
+            initialDelaySeconds: 15
+            periodSeconds: 10
+          livenessProbe:
+            tcpSocket:
+              port: 5432
+            initialDelaySeconds: 15
+            periodSeconds: 10
+
+      volumes:
+        - name: db-storage
+          persistentVolumeClaim:
+            claimName: db-pvc
