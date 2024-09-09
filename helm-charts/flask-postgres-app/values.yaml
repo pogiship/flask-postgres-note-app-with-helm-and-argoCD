@@ -6,7 +6,7 @@ app:
   env:
     name: postgres
     user: postgres
-    port: "5432"
+    port: 5432
     host: db-service.db.svc.cluster.local
     password: postgres
   
