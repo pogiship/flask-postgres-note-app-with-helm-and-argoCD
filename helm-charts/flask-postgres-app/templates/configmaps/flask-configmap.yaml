@@ -8,5 +8,5 @@ metadata:
 data:
   DB_NAME: {{ .Values.app.env.name }}
   POSTGRES_USER: {{ .Values.app.env.user }}
-  DB_PORT: {{ .Values.app.env.port || quote}}
+  DB_PORT: {{ .Values.app.env.port | quote }}
   DB_HOST: {{ .Values.app.env.host }}
